@@ -1,0 +1,55 @@
+{
+  "sources": [
+    {
+      "kind": "ing",
+      "credentials": {
+        "clientId": "13371337",
+        "accessCode": "1337"
+      },
+      "accounts": [
+        "11223344",
+        "44332211"
+      ]
+    }
+  ],
+  "transformers": [
+    {
+      "kind": "date-filter",
+      "notBefore": "01/07/2020"
+    },
+    {
+      "kind": "regexp-categoriser",
+      "rules": [
+        {
+          "pattern": "Telstra",
+          "debit": true,
+          "account": "11223344",
+          "category": "Internet"
+        },
+        {
+          "pattern": "(COLES)|(WOOLWORTHS)",
+          "debit": true,
+          "account": "11223344",
+          "category": "Groceries"
+        }
+      ]
+    }
+  ],
+  "destinations": [
+    {
+      "kind": "aspire-budget",
+      "credentials": "my-service-account.json",
+      "spreadsheetId": "your-spreadsheet-id-here",
+      "accounts": [
+        {
+          "accountId": "11223344",
+          "accountName": "Everyday Transactions"
+        },
+        {
+          "accountId": "44332211",
+          "accountName": "Savings"
+        }
+      ]
+    }
+  ]
+}

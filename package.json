@@ -1,0 +1,32 @@
+{
+  "name": "ing-scrape",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node -r ts-node/register -r tsconfig-paths/register src/main.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bunyan": "^1.8.14",
+    "bunyan-format": "^0.2.1",
+    "csv-parse": "^4.10.1",
+    "google-spreadsheet": "^3.0.11",
+    "moment": "^2.27.0",
+    "puppeteer": "^5.0.0",
+    "yargs": "^15.4.1"
+  },
+  "devDependencies": {
+    "@types/bunyan": "^1.8.6",
+    "@types/bunyan-format": "^0.2.3",
+    "@types/csv-parse": "^1.2.2",
+    "@types/google-spreadsheet": "^3.0.0",
+    "@types/moment": "^2.13.0",
+    "@types/puppeteer": "^3.0.1",
+    "@types/yargs": "^15.0.5",
+    "ts-node": "^8.10.2",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.9.6"
+  }
+}
