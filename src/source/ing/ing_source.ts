@@ -39,7 +39,7 @@ export class IngSource implements Source {
   }
 
   private async fetchTransactionsCsvs() {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
 
     const loginPage = await IngLoginPage.go(page);
