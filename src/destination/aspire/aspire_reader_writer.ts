@@ -113,10 +113,9 @@ export class AspireReaderWriter {
     // availble space
     const resolvedRowIndex: number = rowIndex ?? this.findNextEmptyRowIndex().next().value;
     const rowCells = loadTransactionRowCells(this.sheet, resolvedRowIndex);
-    const dateValue = moment(txn.date).diff(SERIAL_NUMBER_EPOCH, 'days');
-    rowCells.date.value = dateValue;
-    rowCells.outflow.value = txn.outflow > 0 ? txn.outflow.toString() : '';
-    rowCells.inflow.value = txn.inflow > 0 ? txn.outflow.toString() : '';
+    rowCells.date.value = moment(txn.date).diff(SERIAL_NUMBER_EPOCH, 'days');
+    rowCells.outflow.value = txn.outflow > 0 ? txn.outflow : '';
+    rowCells.inflow.value = txn.inflow > 0 ? txn.inflow : '';
     rowCells.category.value = txn.category || '';
     rowCells.account.value = txn.accountName || '';
     rowCells.memo.value = txn.memo || '';
