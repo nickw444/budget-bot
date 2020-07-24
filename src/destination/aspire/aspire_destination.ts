@@ -46,6 +46,7 @@ export class AspireDestination implements Destination {
   private txnOfAspireTxn(aspireTxn: AspireTransaction): Transaction {
     return {
       ...aspireTxn,
+      index: 0,
       accountId: this.accountIdOfName.get(aspireTxn.accountName) || 'unknown-account',
     };
   }

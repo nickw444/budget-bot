@@ -3,6 +3,7 @@ import * as bunyan from 'bunyan';
 import { IngSource, IngSourceConfig } from 'source/ing/ing_source';
 
 export type Transaction = {
+  index: number;
   date: Date;
   inflow: number;
   outflow: number;

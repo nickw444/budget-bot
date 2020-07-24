@@ -5,6 +5,7 @@ import {
   DateFilterTransformer,
   DateFilterTransformerConfig,
 } from 'transformer/date_filter_transformer';
+import { SortTransformer, SortTransformerConfig } from 'transformer/sort_transformer';
 import {
   RegexpCategoriserTransformer,
   RegexpCategoriserTransformerConfig,
@@ -13,7 +14,8 @@ import {
 export type TransformerConfig =
     | DateFilterTransformerConfig
     | CategoriserTransformerConfig
-    | RegexpCategoriserTransformerConfig;
+    | RegexpCategoriserTransformerConfig
+    | SortTransformerConfig;
 
 export interface Transformer {
   transform(txns: readonly Transaction[]): Promise<readonly Transaction[]>;
@@ -29,6 +31,8 @@ export const Transformer = {
         return new RegexpCategoriserTransformer(config, childLogger);
       case 'date-filter':
         return new DateFilterTransformer(config, childLogger);
+      case 'sort':
+        return new SortTransformer(config, childLogger);
       default:
         throw new UnreachableError(config);
     }
