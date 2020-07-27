@@ -11,7 +11,7 @@ type Rule = {
 }
 
 export type RegexpCategoriserTransformerConfig = {
-  kind: "regexp-categoriser",
+  kind: 'regexp-categoriser',
   rules: readonly Rule[],
 }
 

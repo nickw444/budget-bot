@@ -33,7 +33,7 @@ export async function parseTransactionsCsv(csvFilePath: string): Promise<Omit<Tr
       .reverse() // Oldest to newest
       .map((row, index) => ({
         index,
-        date: moment(row[0], "DD-MM-YYYY").toDate(),
+        date: moment(row[0], 'DD-MM-YYYY').toDate(),
         inflow: Number(row[2]),
         outflow: Number(row[3]) * -1,
         memo: cleanMemo(row[1]),

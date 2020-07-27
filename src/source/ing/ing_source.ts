@@ -6,7 +6,7 @@ import { IngLoginPage } from 'source/ing/scraper/login_page';
 import { Source, Transaction } from 'source/source';
 
 export type IngSourceConfig = {
-  kind: "ing",
+  kind: 'ing',
   credentials: {
     clientId: string,
     accessCode: string,
@@ -24,11 +24,11 @@ export class IngSource implements Source {
 
   async getTransactions(): Promise<readonly Transaction[]> {
     if (!this.useCachedData) {
-      this.log.info("Fetching CSVs");
+      this.log.info('Fetching CSVs');
       await this.fetchTransactionsCsvs();
     }
 
-    this.log.info("Loading CSV");
+    this.log.info('Loading CSV');
     const txns: Transaction[] = [];
     for (const accountId of this.config.accounts) {
       const accountTxns = await parseTransactionsCsv(

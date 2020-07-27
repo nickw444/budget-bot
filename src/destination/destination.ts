@@ -1,18 +1,18 @@
 import { UnreachableError } from 'base/preconditions';
-import {
-  AspireDestination,
-  AspireBudgetDestinationConfig,
-} from 'destination/aspire/aspire_destination';
-import { Transaction } from 'source/source';
-import * as moment from 'moment';
 import * as bunyan from 'bunyan';
+import {
+  AspireBudgetDestinationConfig,
+  AspireDestination,
+} from 'destination/aspire/aspire_destination';
+import * as moment from 'moment';
+import { Transaction } from 'source/source';
 
 /**
  * H(date, outflow, inflow, account name)
  */
 export function hashKeyOf(txn: Transaction) {
   return [
-    moment(txn.date).format("DD-MM-YY"),
+    moment(txn.date).format('DD-MM-YY'),
     txn.accountId,
     `${txn.inflow}`,
     `${txn.outflow}`,

@@ -1,6 +1,6 @@
 import { UnreachableError } from 'base/preconditions';
 import * as bunyan from 'bunyan';
-import { Transaction } from "source/source";
+import { Transaction } from 'source/source';
 import {
   DateFilterTransformer,
   DateFilterTransformerConfig,
@@ -41,7 +41,7 @@ export const Transformer = {
 
 
 export type CategoriserTransformerConfig = {
-  kind: "categoriser",
+  kind: 'categoriser',
   accounts: readonly string[],
   categories: readonly string[],
 }

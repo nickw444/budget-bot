@@ -24,15 +24,15 @@ async function main() {
       .describe('c', 'Path to config file')
       .boolean('dryrun')
       .default('dryrun', false)
-      .describe('dryrun', "Don't write any data")
+      .describe('dryrun', 'Don\'t write any data')
       .boolean('useCachedData')
       .default('useCachedData', false)
-      .describe('useCachedData', "Don't download/scrape recent data")
+      .describe('useCachedData', 'Don\'t download/scrape recent data')
       .argv;
 
   const logFormat = bunyanFormat({ outputMode: 'short' });
   const log = bunyan.createLogger({
-    name: "budget-bot",
+    name: 'budget-bot',
     stream: logFormat,
     level: argv.verbose ? 'debug' : 'info',
   });
@@ -45,18 +45,18 @@ async function main() {
       argv.dryrun,
   )));
 
-  log.info("Collecting transaction data from all sources");
+  log.info('Collecting transaction data from all sources');
   let transactions: Transaction[] = [];
   for (const source of sources) {
     transactions.push(...await source.getTransactions());
   }
 
-  log.info("Tranforming tranaction data through all transformers");
+  log.info('Tranforming tranaction data through all transformers');
   for (const transformer of transformers) {
     transactions = [...await transformer.transform(transactions)];
   }
 
-  log.info("Writing transactions to destinations");
+  log.info('Writing transactions to destinations');
   for (const destination of destinations) {
     await destination.writeTransactions(transactions);
   }

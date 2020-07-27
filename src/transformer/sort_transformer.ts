@@ -6,7 +6,7 @@ const SUPPORTED_FIELDS = ['accountId', 'date', 'index'] as const;
 type SupportedField = keyof Pick<Transaction, typeof SUPPORTED_FIELDS[number]>
 
 export type SortTransformerConfig = {
-  kind: "sort",
+  kind: 'sort',
   sortBy: SupportedField[],
 }
 
@@ -33,7 +33,7 @@ export class SortTransformer implements Transformer {
     } else if (v1 instanceof Date && v2 instanceof Date) {
       return v1.getTime() - v2.getTime();
     } else {
-      throw new Error(`Unknown comparison for ${typeof v1} and ${typeof v2}`)
+      throw new Error(`Unknown comparison for ${typeof v1} and ${typeof v2}`);
     }
   }
 

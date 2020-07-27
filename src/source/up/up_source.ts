@@ -1,11 +1,10 @@
-import { delay } from 'base/delay';
 import * as bunyan from 'bunyan';
 import * as moment from 'moment';
 import { Source, Transaction } from 'source/source';
 import { GetTransactionsResponse, TransactionResource, UpApiClient } from './up_api_client';
 
 export type UpSourceConfig = {
-  kind: "up",
+  kind: 'up',
   personalAccessToken: string,
   accounts: readonly string[],
 }

@@ -1,5 +1,5 @@
-import { Preconditions } from "base/preconditions";
-import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from "google-spreadsheet";
+import { Preconditions } from 'base/preconditions';
+import { GoogleSpreadsheet, GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import * as moment from 'moment';
 
 const SERIAL_NUMBER_EPOCH = moment('1899-12-30');
@@ -52,7 +52,7 @@ export class AspireReaderWriter {
   static async of(doc: GoogleSpreadsheet) {
     await doc.loadInfo();
     const sheet = Preconditions.checkExists(
-        doc.sheetsByIndex.find((sheet) => sheet.title === "Transactions"));
+        doc.sheetsByIndex.find((sheet) => sheet.title === 'Transactions'));
     await sheet.loadCells(AspireReaderWriter.TXNS_CELL_RANGE);
     return new AspireReaderWriter(sheet);
   }
@@ -86,7 +86,7 @@ export class AspireReaderWriter {
     const inflow = rowCells.inflow.value;
     const outflow = rowCells.outflow.value;
     return {
-      date: moment(rowCells.date.formattedValue, "DD/MM/YYYY").toDate(),
+      date: moment(rowCells.date.formattedValue, 'DD/MM/YYYY').toDate(),
       outflow: outflow && Number(outflow) || 0,
       inflow: inflow && Number(inflow) || 0,
       category: rowCells.category.value?.toString(),
@@ -101,7 +101,7 @@ export class AspireReaderWriter {
     for (const txn of txns) {
       const curr = emptyRows.next();
       if (curr.done) {
-        throw new Error("No empty cells remaining");
+        throw new Error('No empty cells remaining');
       }
 
       this.writeTransaction(txn, curr.value);
