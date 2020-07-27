@@ -24,12 +24,12 @@ Data collected from each source is flat mapped into a single list, and passed th
 
 ## Supported Banks
 
-- [Up](https://up.com.au/) through official support via their [public, read-only API](https://developer.up.com.au)
-- [ING](https://www.ing.com.au/) through screen scraping and CSV download
+- [Up](https://up.com.au/) through official support via their [public, read-only API](https://developer.up.com.au) [implementation](src/source/up/)
+- [ING](https://www.ing.com.au/) through screen scraping and CSV download ([implementation](src/source/ing/))
 
 ## Supported Destinations
 
-- [Aspire Budget Spreadsheet](https://www.aspirebudget.com/)
+- [Aspire Budget Spreadsheet](https://www.aspirebudget.com/) ([implementation](src/destination/aspire/))
 
 ## Available Data Transformers
 
