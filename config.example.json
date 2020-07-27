@@ -10,12 +10,27 @@
         "11223344",
         "44332211"
       ]
+    },
+    {
+      "kind": "up",
+      "personalAccessToken": "up:yeah:XXXXX",
+      "accounts": [
+        "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+      ]
     }
   ],
   "transformers": [
     {
       "kind": "date-filter",
       "notBefore": "01/07/2020"
+    },
+    {
+      "kind": "sort",
+      "sortBy": [
+        "date",
+        "accountId",
+        "index"
+      ]
     },
     {
       "kind": "regexp-categoriser",
@@ -48,6 +63,10 @@
         {
           "accountId": "44332211",
           "accountName": "Savings"
+        },
+        {
+          "accountId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
+          "accountName": "Up Transactions"
         }
       ]
     }
