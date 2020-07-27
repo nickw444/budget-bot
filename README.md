@@ -22,6 +22,21 @@ Source 3 ---+                                          +--- Destination 3
 
 Data collected from each source is flat mapped into a single list, and passed through the transformer chain. The full set of transformed data is then provided to each destination.
 
+## Supported Banks
+
+- [Up](https://up.com.au/) through official support via their [public, read-only API](https://developer.up.com.au)
+- [ING](https://www.ing.com.au/) through screen scraping and CSV download
+
+## Supported Destinations
+
+- [Aspire Budget Spreadsheet](https://www.aspirebudget.com/)
+
+## Available Data Transformers
+
+- [Date Filter](src/transformer/date_filter_transformer.ts): Filter transactions by their date
+- [Regexp Categoriser](src/transformer/regexp_categoriser_transformer.ts): Apply a categorisation to transactions based on a regexp matching their memo field.
+- [Sort](src/transformer/sort_transformer.ts): Sort transactions by a limited set of criterion
+
 ### Configuration
 
 Pipelines are configured using a JSON configuration file format:
@@ -77,21 +92,6 @@ Pipelines are configured using a JSON configuration file format:
 ```
 
 See [config.example.json](config.example.json) for a more complex/detailed configuration example.
-
-## Supported Banks
-
-- [Up](https://up.com.au/) through official support via their [public, read-only API](https://developer.up.com.au)
-- [ING](https://www.ing.com.au/) through screen scraping and CSV download
-
-## Supported Destinations
-
-- [Aspire Budget Spreadsheet](https://www.aspirebudget.com/)
-
-## Available Data Transformers
-
-- [Date Filter](src/transformer/date_filter_transformer.ts): Filter transactions by their date
-- [Regexp Categoriser](src/transformer/regexp_categoriser_transformer.ts): Apply a categorisation to transactions based on a regexp matching their memo field.
-- [Sort](src/transformer/sort_transformer.ts): Sort transactions by a limited set of criterion
 
 ## Usage
 
