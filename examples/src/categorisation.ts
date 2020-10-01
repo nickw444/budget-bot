@@ -43,8 +43,8 @@ async function main() {
       .step(new RegexpCategoriserTransformer([
         {
           pattern: /(COLES)|(WOOLWORTHS)/,
-          category: "Groceries",
-          match: (t) => t.accountId === "11223344" && t.debit > 0,
+          category: 'Groceries',
+          match: (t) => t.accountId === '11223344' && t.debit > 0,
         },
       ]))
       .step(txns => txns.map((txn): AspireTransaction => ({
