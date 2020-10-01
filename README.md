@@ -45,6 +45,7 @@ You can explore more examples in our [examples](examples/src) directory.
 * [Aspire Budget](examples/src/aspire_budget.ts)
 * [Custom Plugins](examples/src/custom_plugins.ts)
 * [Google Sheets](examples/src/google_sheets.ts)
+* [Categorisation](examples/src/categorisation.ts)
 
 ## Plugins
 
