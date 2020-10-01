@@ -1,28 +1,25 @@
-import { delay } from 'base/delay';
 import * as bunyan from 'bunyan';
 import * as puppeteer from 'puppeteer';
-import { parseTransactionsCsv } from 'source/ing/ing_csv';
-import { IngLoginPage } from 'source/ing/scraper/login_page';
-import { Source, Transaction } from 'source/source';
+import { delay } from '../../base/delay';
+import { bb } from '../../lib/bb';
+import { Transaction } from '../source';
+import { parseTransactionsCsv } from './ing_csv';
+import { IngLoginPage } from './scraper/login_page';
 
-export type IngSourceConfig = {
-  kind: 'ing',
-  credentials: {
-    clientId: string,
-    accessCode: string,
-  },
-  accounts: readonly string[],
-}
 
-export class IngSource implements Source {
+export class IngSource implements bb.Plugin<void, Transaction[]> {
   constructor(
-      private readonly config: IngSourceConfig,
+      private readonly credentials: {
+        clientId: string,
+        accessCode: string,
+      },
+      private readonly accounts: readonly string[],
       private readonly log: bunyan,
       private readonly useCachedData: boolean,
   ) {
   }
 
-  async getTransactions(): Promise<readonly Transaction[]> {
+  async exec(): Promise<Transaction[]> {
     if (!this.useCachedData) {
       this.log.info('Fetching CSVs');
       await this.fetchTransactionsCsvs();
@@ -30,7 +27,7 @@ export class IngSource implements Source {
 
     this.log.info('Loading CSV');
     const txns: Transaction[] = [];
-    for (const accountId of this.config.accounts) {
+    for (const accountId of this.accounts) {
       const accountTxns = await parseTransactionsCsv(
           `./target/transactions/${accountId}/Transactions.csv`);
       txns.push(...accountTxns.map(txn => ({ ...txn, accountId })));
@@ -44,11 +41,11 @@ export class IngSource implements Source {
 
     const loginPage = await IngLoginPage.go(page);
     await loginPage.waitUntilLoginReady();
-    await loginPage.typeClientId(this.config.credentials.clientId);
-    const bankingPage = await loginPage.typeAccessCodeAndLogin(this.config.credentials.accessCode);
+    await loginPage.typeClientId(this.credentials.clientId);
+    const bankingPage = await loginPage.typeAccessCodeAndLogin(this.credentials.accessCode);
     await bankingPage.waitUntilReady();
 
-    for (const accountId of this.config.accounts) {
+    for (const accountId of this.accounts) {
       await bankingPage.visitAccount(accountId);
       await (page as any)._client.send('Page.setDownloadBehavior', {
         behavior: 'allow',

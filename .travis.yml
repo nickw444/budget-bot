@@ -1,10 +1,20 @@
 language: node_js
 node_js:
   - 14
-
-install:
-  - npm install
-
 script:
+  - npm install
   - npm run build
   - npm run lint
+  - cd examples
+  - npm install
+  - npm run lint:ts
+
+deploy:
+  provider: npm
+  email: nick@nickwhyte.com
+  api_key:
+    secure: BfJLuze0UWdNkSFu+mHdZpCS0Laz0RCevAmHhqhDGEkQmJVtPguKC3B5hF2YM412LiFmryBnxoReheN6HGAS9JCktORkIGJMgOZZMQMiDGri8w4xzVMc19dQavp/3xVddUMetOXoo6yyBrxW4YkOtW81ygX5arvZWP/DKlm/Lu29fecG0dF2W0gQo4f4ftKvy3MBkIPkERjzBGcloLwEym6R37vY73HhGnVFv7SRlr90afR6jkCKB5yy4pImmgtLF31q5bnJLJi5exRkjStvrX4EesAAsVgl73hRrwcJDoz7v1lJnD+dw6xkKesxpWMpwjkUKgXE+smh8up/hUY0OaPmt1DAj2MI8p4dEP1G5XnAcZ9h4sL+RUs4Arku9iBhsZHHtxiSu8kW1lWyRS964/ycN5I8lNvj2vnt3XVdz7RlOTuH6XcVkXo+uOz1Cr81lLlyCGwPZjTFGh8qNKfBAgO8Lpc/s/YoQ9Xx5Ti3R1yuuLvBwDTLBbSaYfmzqWILTgxmbKV8MVDisBrp9xvDWPnx6Wz/GA1TyKxSP+8LNGE2kiyAKsQ6frBA5ufWdLrQhtyJubZGAYwuxjxWZoK7M558/3wjvefqU/sXk4SwlaMWhe4Yn2IQtdtREx13PzdywoeTEiYNY+64+qUGUeL5vHSDWfmZf6QkvlortC0c/g0=
+  on:
+    tags: true
+    repo: nickw444/budget-bot
+  skip_cleanup: 'true'

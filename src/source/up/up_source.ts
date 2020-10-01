@@ -1,29 +1,27 @@
 import * as bunyan from 'bunyan';
-import * as moment from 'moment';
-import { Source, Transaction } from 'source/source';
+import { DateTime } from 'luxon';
+import { bb } from '../../lib/bb';
+import { Transaction } from '../source';
 import { GetTransactionsResponse, TransactionResource, UpApiClient } from './up_api_client';
 
-export type UpSourceConfig = {
-  kind: 'up',
-  personalAccessToken: string,
-  accounts: readonly string[],
-}
-
-export class UpSource implements Source {
-
+export class UpSource implements bb.Plugin<void, Transaction[]> {
   constructor(
-      private readonly config: UpSourceConfig,
+      private readonly accounts: readonly string[],
       private readonly log: bunyan,
       private readonly client: UpApiClient,
   ) {
   }
 
-  static create(config: UpSourceConfig, log: bunyan) {
-    const client = UpApiClient.create(config.personalAccessToken);
-    return new UpSource(config, log, client);
+  static create(
+      personalAccessToken: string,
+      accounts: readonly string[],
+      log: bunyan,
+  ): UpSource {
+    const client = UpApiClient.create(personalAccessToken);
+    return new UpSource(accounts, log, client);
   }
 
-  async getTransactions(): Promise<readonly Transaction[]> {
+  async exec(): Promise<Transaction[]> {
     const transactions: TransactionResource[] = [];
     let continuationToken: string | undefined = undefined;
     do {
@@ -37,15 +35,15 @@ export class UpSource implements Source {
 
     return transactions
         .reverse()
-        .filter(txn => this.config.accounts.includes(txn.relationships.account.data.id))
+        .filter(txn => this.accounts.includes(txn.relationships.account.data.id))
         .filter(txn => txn.attributes.status === 'SETTLED')
         .map((txn, index) => {
           const value = txn.attributes.amount.valueInBaseUnits / 100;
           return {
             index,
-            date: moment(txn.attributes.settledAt).toDate(),
-            inflow: value > 0 ? Math.abs(value) : 0,
-            outflow: value < 0 ? Math.abs(value) : 0,
+            date: DateTime.fromISO(txn.attributes.settledAt).toJSDate(),
+            credit: value > 0 ? Math.abs(value) : 0,
+            debit: value < 0 ? Math.abs(value) : 0,
             memo: [txn.attributes.message, txn.attributes.description, txn.attributes.rawText]
                 .map(x => x?.trim())
                 .filter(x => x != null && x.length > 0)

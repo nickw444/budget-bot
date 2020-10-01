@@ -1,5 +1,5 @@
 import { Page } from 'puppeteer';
-import { PageObject } from 'source/ing/scraper/page_object';
+import { PageObject } from './page_object';
 
 export class IngBankingPage extends PageObject {
   static of(page: Page) {
