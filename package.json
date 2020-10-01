@@ -10,7 +10,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch"
   },
-  "author": "",
+  "author": "Nick Whyte",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
