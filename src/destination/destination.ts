@@ -4,6 +4,7 @@ import {
   AspireBudgetDestinationConfig,
   AspireDestination,
 } from 'destination/aspire/aspire_destination';
+import { LunchmoneyDestination, LunchmoneyDestinationConfig } from 'destination/lunchmoney/lunchmoney_destination';
 import * as moment from 'moment';
 import { Transaction } from 'source/source';
 
@@ -20,7 +21,8 @@ export function hashKeyOf(txn: Transaction) {
 }
 
 export type DestinationConfig =
-    | AspireBudgetDestinationConfig;
+    | AspireBudgetDestinationConfig
+    | LunchmoneyDestinationConfig;
 
 export interface Destination {
   writeTransactions(txns: readonly Transaction[]): Promise<void>
@@ -32,8 +34,10 @@ export const Destinaton = {
     switch (config.kind) {
       case 'aspire-budget':
         return AspireDestination.create(config, childLogger, dryrun);
+      case 'lunchmoney':
+        return LunchmoneyDestination.create(config, childLogger, dryrun);
       default:
-        throw new UnreachableError(config.kind);
+        throw new UnreachableError(config);
     }
   },
 };
