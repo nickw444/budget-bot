@@ -2,13 +2,10 @@ language: node_js
 node_js:
   - 14
 
-jobs:
-  include:
-    - script:
-        - npm install
-        - npm run build
-        - npm run lint
-    - script:
-        - cd examples
-        - npm install
-        - npm run lint:ts
+script:
+  - npm install
+  - npm run build
+  - npm run lint
+  - cd examples
+  - npm install
+  - npm run lint:ts
