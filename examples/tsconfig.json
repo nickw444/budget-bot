@@ -9,8 +9,7 @@
     "sourceMap": true,
     "downlevelIteration": true,
     "strict": true,
-    "declaration": true,
-    "outDir": "dist"
+    "declaration": true
   },
   "include": [
     "src/**/*"

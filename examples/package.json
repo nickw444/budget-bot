@@ -1,0 +1,12 @@
+{
+  "name": "budget-bot-examples",
+  "scripts": {
+    "start": "node -r ts-node/register",
+    "lint:ts": "tsc --noEmit"
+  },
+  "dependencies": {
+    "budget-bot": "file:..",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
+  }
+}

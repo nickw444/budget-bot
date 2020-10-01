@@ -1,7 +1,7 @@
-import { delay } from 'base/delay';
 import { Page } from 'puppeteer';
-import { IngBankingPage } from 'source/ing/scraper/banking_page';
-import { PageObject } from 'source/ing/scraper/page_object';
+import { delay } from '../../../base/delay';
+import { IngBankingPage } from './banking_page';
+import { PageObject } from './page_object';
 
 export class IngLoginPage extends PageObject {
   static async go(page: Page) {

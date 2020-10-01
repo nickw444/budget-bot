@@ -1,107 +1,82 @@
 # Budget Bot
 
-An extensible pipelining tool to build data pipelines from your bank account to any destination.
+An extensible library to build data pipelines from your bank account to any destination.
 
 ## Architecture
 
-Budget Bot implements a general purpose pipeline system with 3 main entity types:
+Data pipelines are built by composing a series of _Plugins_. The base library includes a handful of 
+[_sources_](src/source), [_transformers_](src/transform), and [_destinations_](src/destination) 
+to help you begin connecting your banking data to 3rd party services.
 
-- Sources
-- Transformers
-- Destinations
+Pipelines are defined in _user-land_ Typescript, rather than a configuration file. This allows us 
+to counter the
+[inner platform effect](https://exceptionnotfound.net/the-inner-platform-effect-the-daily-software-anti-pattern/), 
+whilst providing an extensible environment for user-built plugins. See our [full examples](examples/src)
+to see how you can build complex pipelines.
 
-The follow diagram illustrates how data flows through the system:
+### Example Pipeline
+
+```typescript
+import { bb, flatten } from 'budget-bot';
+
+class StringListSource implements bb.Plugin<void, string[]> {
+  async exec(input: void): Promise<string[]> {
+    return ['a', 'b', 'c'];
+  }
+}
+
+async function main() {
+  await bb.pipe(
+      bb.allSeq(
+          new StringListSource(),
+          new StringListSource(),
+      ))
+      .step(flatten)
+      .step((result) => console.log(result))
+      .exec();
+}
+
+main();
 
 ```
-Source 1 ---+                                          +--- Destination 1
-            |                                          |
-Source 2 ---+---- Transformer 1 -> Transformer 2 -> ---+--- Destination 2
-            |                                          |
-Source 3 ---+                                          +--- Destination 3
-```
 
-Data collected from each source is flat mapped into a single list, and passed through the transformer chain. The full set of transformed data is then provided to each destination.
+You can explore more examples in our [examples](examples/src) directory. 
 
-## Supported Banks
+* [Aspire Budget](examples/src/aspire_budget.ts)
+* [Custom Plugins](examples/src/custom_plugins.ts)
+* [Google Sheets](examples/src/google_sheets.ts)
+
+## Plugins
+
+### Sources
 
 - [Up](https://up.com.au/) through official support via their [public, read-only API](https://developer.up.com.au) ([implementation](src/source/up/))
 - [ING](https://www.ing.com.au/) through screen scraping and CSV download ([implementation](src/source/ing/))
 
-## Supported Destinations
+### Destinations
 
-- [Aspire Budget Spreadsheet](https://www.aspirebudget.com/) ([implementation](src/destination/aspire/))
+- [Google Sheets](https://www.google.com.au/sheets/about/) ([implementation](src/destination/google_sheets_destination.ts))
+- [Aspire Budget Spreadsheet (via Google Sheets)](https://www.aspirebudget.com/) ([implementation](src/destination/google_sheets_destination.ts))
 
-## Available Data Transformers
+### Transformers
 
-- [Date Filter](src/transformer/date_filter_transformer.ts): Filter transactions by their date
-- [Regexp Categoriser](src/transformer/regexp_categoriser_transformer.ts): Apply a categorisation to transactions based on a regexp matching their memo field.
-- [Sort](src/transformer/sort_transformer.ts): Sort transactions by a limited set of criterion
+- [Date Filter](src/transform/date_filter_transformer.ts): Filter transactions by their date
+- [Regexp Categoriser](src/transform/regexp_categoriser_transformer.ts): Apply a categorisation to transactions based on a regexp matching their memo field.
+- [Sort](src/transform/sort_transformer.ts): Sort transactions by a limited set of criterion
+- [Flatten](src/transform/flatten.ts): Flatten a `T[][]` to a `T[]` 
 
-### Configuration
+### Custom Plugins
 
-Pipelines are configured using a JSON configuration file format:
+If these plugins aren't quite what you're looking for, then you can build your own. Simply implement the `bb.Plugin<Input, Output>` interface:
 
-```json
-{
-  "sources": [
-    {
-      "kind": "up",
-      "personalAccessToken": "up:yeah:XXXXX",
-      "accounts": [
-        "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-      ]
-    }
-  ],
-  "transformers": [
-    {
-      "kind": "date-filter",
-      "notBefore": "01/07/2020"
-    },
-    {
-      "kind": "sort",
-      "sortBy": [
-        "date"
-      ]
-    },
-    {
-      "kind": "regexp-categoriser",
-      "rules": [
-        {
-          "pattern": "(COLES)|(WOOLWORTHS)",
-          "debit": true,
-          "account": "11223344",
-          "category": "Groceries"
-        }
-      ]
-    }
-  ],
-  "destinations": [
-    {
-      "kind": "aspire-budget",
-      "credentials": "my-service-account.json",
-      "spreadsheetId": "your-spreadsheet-id-here",
-      "accounts": [
-        {
-          "accountId": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
-          "accountName": "Up Transactions"
-        }
-      ]
-    }
-  ]
+```typescript
+import { bb } from 'budget-bot';
+
+class IdentityPlugin implements bb.Plugin<string[], string[]> {
+  async exec(input: string[]): Promise<string[]> {
+    return input;
+  }
 }
 ```
 
-See [config.example.json](config.example.json) for a more complex/detailed configuration example.
-
-## Usage
-
-```
-$> npm start -- --help
-Options:
-  --help           Show help                                           [boolean]
-  --version        Show version number                                 [boolean]
-  -v, --verbose    Enable verbose output                               [boolean]
-  -c, --config     Path to config file                                  [string]
-  --dryrun         Don't write any data               [boolean] [default: false]
-  --useCachedData  Don't download/scrape recent data  [boolean] [default: false]
-```
+If you build a complex plugin which may benefit others, please feel free to raise a Pull Request.

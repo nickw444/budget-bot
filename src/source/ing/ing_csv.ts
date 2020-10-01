@@ -1,7 +1,7 @@
 import * as parse from 'csv-parse';
 import * as fs from 'fs';
-import * as moment from 'moment';
-import { Transaction } from 'source/source';
+import { DateTime } from 'luxon';
+import { Transaction } from '../source';
 
 
 function parseCsvFile(csvFilePath: string): Promise<string[][]> {
@@ -31,12 +31,14 @@ export async function parseTransactionsCsv(csvFilePath: string): Promise<Omit<Tr
   return data
       .slice(1) // Strip headers
       .reverse() // Oldest to newest
-      .map((row, index) => ({
-        index,
-        date: moment(row[0], 'DD-MM-YYYY').toDate(),
-        inflow: Number(row[2]),
-        outflow: Number(row[3]) * -1,
-        memo: cleanMemo(row[1]),
-        category: undefined,
-      }));
+      .map((row, index) => {
+        return ({
+          index,
+          date: DateTime.fromFormat(row[0], 'dd/LL/yyyy').toJSDate(),
+          credit: Number(row[2]),
+          debit: Number(row[3]) * -1,
+          memo: cleanMemo(row[1]),
+          category: undefined,
+        });
+      });
 }
