@@ -9,4 +9,5 @@ install:
 script:
   - npm run build
   - npm run lint
-  - cd examples && npm run lint:ts
+  - cd examples
+  - npm run lint:ts
