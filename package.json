@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bunyan": "^1.8.14",
     "bunyan-format": "^0.2.1",
     "csv-parse": "^4.10.1",
