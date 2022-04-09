@@ -17,7 +17,7 @@
     "bunyan-format": "^0.2.1",
     "csv-parse": "^4.10.1",
     "google-spreadsheet": "^3.0.11",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "puppeteer": "^5.0.0",
     "yargs": "^15.4.1"
   },
